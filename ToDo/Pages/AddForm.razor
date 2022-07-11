@@ -1,0 +1,43 @@
+﻿
+<!-- Overlay element -->
+<div id="overlay" @onclick="Close" class="fixed @_hidden z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
+
+<div id="dialog"
+     class=" fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-md px-8 py-6 space-y-5 drop-shadow-lg transition duration-500 transform  @_animationStyles">
+    <h1 class="text-2xl font-semibold">New task</h1>
+    <div class="py-5 border-t border-b border-gray-300">
+        <div>
+            <div class="mt-1">
+                <DatePicker Title="No nullable" @bind-Value="@d1"/>
+            </div>
+            <div class="mt-1">
+                <textarea id="description" name="description" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="description"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-end">
+        <button id="cancel" @onclick="Close" class="px-5 py-2 bg-indigo-500 hover:bg-indigo-700 text-white cursor-pointer rounded-md">
+            Cancel
+        </button>
+    </div>
+</div>
+@code {
+
+    private string _hidden = "hidden";
+    private string _animationStyles = "opacity-0";
+    public DateTime? d1;
+    public void Open()
+    {
+        _hidden = "";
+        _animationStyles = "opacity-100";
+       
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        _hidden = "hidden";
+        _animationStyles = "opacity-0";
+        StateHasChanged();
+    }
+}

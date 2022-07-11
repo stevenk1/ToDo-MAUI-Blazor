@@ -46,4 +46,8 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Todo.Db\Todo.Db.csproj" />
+	</ItemGroup>
+
 </Project>

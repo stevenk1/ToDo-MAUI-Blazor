@@ -4,5 +4,16 @@
     <h1 class="mt-5 font-black text-center text-3xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-green-200 to-yellow-300">ToDo</h1>
 </div>
 <div class="md:grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-1 gap-4">
-    <p>Hello World !</p>
+
 </div>
+<button @onclick="AddForm">open</button>
+<AddForm @ref="addForm"></AddForm>
+
+@code {
+    private AddForm addForm;
+
+    public void AddForm()
+    {
+        addForm.Open();
+    }
+}
