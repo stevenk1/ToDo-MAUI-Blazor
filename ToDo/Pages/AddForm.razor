@@ -1,36 +1,51 @@
-﻿
+﻿@using ToDo.Services
 <!-- Overlay element -->
 <div id="overlay" @onclick="Close" class="fixed @_hidden z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
+<div id="popup-modal" tabindex="-1" class="w-96  overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-500 transform  @_animationStyles">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <EditForm EditContext="@editContext" OnSubmit="@HandleSubmit">
+                <DataAnnotationsValidator />
+                <button type="button" @onclick="Close" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="popup-modal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <div class="p-6 text-center">
+                    <h1 class="text-2xl font-semibold">New task</h1>
+                    <div class="mt-3">
+                        <InputDate @bind-Value="_draft.DueTime" class="shadow-sm focus:ring-slate-500 focus:border-slate-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                    </div>
+                    <div class="mt-3">
+                        <InputTextArea class="shadow-sm focus:ring-slate-500 focus:border-slate-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="description" @bind-Value="_draft.Description" />
+                    </div>
 
-<div id="dialog"
-     class=" fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-md px-8 py-6 space-y-5 drop-shadow-lg transition duration-500 transform  @_animationStyles">
-    <h1 class="text-2xl font-semibold">New task</h1>
-    <div class="py-5 border-t border-b border-gray-300">
-        <div>
-            <div class="mt-1">
-                <DatePicker Title="No nullable" @bind-Value="@d1"/>
-            </div>
-            <div class="mt-1">
-                <textarea id="description" name="description" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="description"></textarea>
-            </div>
+                    <button id="save" type="submit" class="mt-3 px-5 py-2 bg-slate-700 hover:bg-slate-900 text-white cursor-pointer rounded-md">
+                        Save
+                    </button>
+                </div>
+            </EditForm>
         </div>
-    </div>
-    <div class="flex justify-end">
-        <button id="cancel" @onclick="Close" class="px-5 py-2 bg-indigo-500 hover:bg-indigo-700 text-white cursor-pointer rounded-md">
-            Cancel
-        </button>
     </div>
 </div>
 @code {
+    [Parameter]
+    public EventCallback<TaskDto> OnCreate { get; set; }
 
     private string _hidden = "hidden";
+    private TaskDto _draft = new();
     private string _animationStyles = "opacity-0";
-    public DateTime? d1;
+    private EditContext editContext;
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new(_draft);
+    }
+
     public void Open()
     {
         _hidden = "";
         _animationStyles = "opacity-100";
-       
+
         StateHasChanged();
     }
 
@@ -39,5 +54,15 @@
         _hidden = "hidden";
         _animationStyles = "opacity-0";
         StateHasChanged();
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (editContext != null && editContext.Validate())
+        {
+            await OnCreate.InvokeAsync(_draft);
+            _draft = new();
+            Close();
+        }
     }
 }

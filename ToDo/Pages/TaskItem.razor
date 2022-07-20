@@ -1,0 +1,52 @@
+﻿<div role="listitem" class="task focused">
+	<!-- Check Icon -->
+	<button tabindex="0"
+			class="w-7 h-7 mr-4 p-0 rounded-full focused text-gray-400 hover:text-green-500" @onclick="ToggleCheck">
+		<svg class="ease-in-and-out @(task.Done ? "completed" : "") w-full h-full rounded-full"
+			 stroke="currentColor"
+			 viewBox="0 0 24 24"
+			 xmlns="http://www.w3.org/2000/svg">
+			<path stroke-linecap="round"
+				  stroke-linejoin="round"
+				  stroke-width="2"
+				  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+		</svg>
+	</button>
+	<!-- Task Name -->
+	<p title="TODO"
+	   class="ease-in-and-out font-bold text-base @(task.Done ? "line-through text-gray-400" : "text-gray-600") capitalize truncate">@task.Description</p>
+	<!-- Trash Icon -->
+	<button tabindex="0"
+			class="w-8 h-8 p-0.5 rounded-md focused ml-auto text-gray-400 hover:text-red-400" @onclick="Remove">
+		<svg class="w-full h-full"
+			 fill="none"
+			 stroke="currentColor"
+			 viewBox="0 0 24 24"
+			 xmlns="http://www.w3.org/2000/svg">
+			<path stroke-linecap="round"
+				  stroke-linejoin="round"
+				  stroke-width="2"
+				  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+		</svg>
+	</button>
+</div>
+
+@code {
+	[Parameter] public TaskDto task { get; set; }
+	[Parameter]
+	public EventCallback<TaskDto> OnRemove { get; set; }
+	[Parameter]
+	public EventCallback<TaskDto> OnToggleCheck { get; set; }
+
+	public void Remove()
+	{
+		OnRemove.InvokeAsync(task);
+	}
+
+	public void ToggleCheck()
+	{
+		task.Done = !task.Done;
+		OnToggleCheck.InvokeAsync(task);
+	}
+
+}

@@ -10,42 +10,51 @@ namespace Todo.Db
     public class BaseRepository<T> : IBaseRepository<T>
     {
         private const string _databaseName = "todo.db";
-        public ILiteCollection<T> Collection { get; }
 
-        public BaseRepository()
+        public ILiteDatabase GetDatabase()
         {
             var filePath = Path.Combine(
-               FileSystem.Current.AppDataDirectory,
-                _databaseName);
+              FileSystem.Current.AppDataDirectory,
+               _databaseName);
+            return new LiteDatabase(filePath);
 
-            using var db = new LiteDatabase(filePath);
-            Collection = db.GetCollection<T>();
         }
 
         public virtual T Create(T entity)
         {
-            var newId = Collection.Insert(entity);
-            return Collection.FindById(newId.AsInt32);
+            using var db = GetDatabase();
+            var collection = db.GetCollection<T>();
+            var  id=collection.Insert(entity);
+            return collection.FindById(id);
         }
 
-        public virtual IEnumerable<T> All()
+        public virtual List<T> All()
         {
-            return Collection.FindAll();
+            using var db = GetDatabase();
+            var collection = db.GetCollection<T>();
+            return collection.FindAll().ToList();
         }
 
-        public virtual T FindById(int id)
+        public virtual T FindById(ObjectId id)
         {
-            return Collection.FindById(id);
+            using var db = GetDatabase();
+            var collection = db.GetCollection<T>();
+            return collection.FindById(id);
         }
 
         public virtual void Update(T entity)
         {
-            Collection.Upsert(entity);
+            using var db = GetDatabase();
+            var collection = db.GetCollection<T>();
+            collection.Upsert(entity);
         }
 
-        public virtual bool Delete(int id)
+        public virtual bool Delete(ObjectId id)
         {
-            return Collection.Delete(id);
+            using var db = GetDatabase();
+            var collection = db.GetCollection<T>();
+            return collection.Delete(id);
         }
+
     }
 }

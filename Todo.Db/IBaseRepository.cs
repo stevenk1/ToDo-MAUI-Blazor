@@ -1,5 +1,6 @@
 ﻿//IBaseRepository.cs
 
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Todo.Db
     public interface IBaseRepository<T>
     {
         T Create(T data);
-        IEnumerable<T> All();
-        T FindById(int id);
+        List<T> All();
+        T FindById(ObjectId id);
         void Update(T entity);
-        bool Delete(int id);
+        bool Delete(ObjectId id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using Todo.Db;
+using ToDo.Services;
 using ToDo.Data;
 
 namespace ToDo;
@@ -22,7 +23,7 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddTransient<TaskRepository>();
-
+        builder.Services.AddTransient<TaskService>();
         return builder.Build();
     }
 }

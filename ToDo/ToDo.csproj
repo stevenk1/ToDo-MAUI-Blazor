@@ -47,6 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\ToDo.Application\ToDo.Services.csproj" />
 	  <ProjectReference Include="..\Todo.Db\Todo.Db.csproj" />
 	</ItemGroup>
 
