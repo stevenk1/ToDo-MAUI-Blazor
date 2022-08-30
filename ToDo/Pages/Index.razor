@@ -16,7 +16,7 @@
 </div>
 
 <AddForm @ref="addForm" OnCreate="OnCreate"></AddForm>
-<button @onclick="AddForm"
+<button @onclick="AddFormOpen"
 		class="p-0 mb-4  mr-4  w-10 h-10 bg-slate-700 rounded-full mouse shadow focused absolute bottom-0 right-0">
 	<svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block fill-gray-400 hover:fill-cyan-700">
             <path  d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
@@ -37,7 +37,7 @@
 	}
 
 
-	public void AddForm()
+	public void AddFormOpen()
 	{
 		addForm.Open();
 	}
@@ -47,7 +47,6 @@
 		taskService.Create(task);
 
 		tasks = taskService.GetAll().ToList();
-		StateHasChanged();
 	}
 
 
