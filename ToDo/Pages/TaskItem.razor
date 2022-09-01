@@ -13,10 +13,9 @@
 		</svg>
 	</button>
 	<!-- Task Name -->
-	<p title="TODO"
-	   class="ease-in-and-out font-bold text-base @(task.Done ? "line-through text-gray-400" : "text-gray-600") capitalize truncate">@task.Description</p>
+	<p class="ease-in-and-out font-bold text-base @(task.Done ? "line-through text-gray-400" : "text-gray-600") capitalize truncate">@task.Description</p>
 	<!-- Trash Icon -->
-	<button tabindex="0"
+	<!--<button tabindex="0"
 			class="w-8 h-8 p-0.5 rounded-md focused ml-auto text-gray-400 hover:text-red-400" @onclick="Remove">
 		<svg class="w-full h-full"
 			 fill="none"
@@ -28,7 +27,7 @@
 				  stroke-width="2"
 				  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
 		</svg>
-	</button>
+	</button>-->
 </div>
 
 @code {

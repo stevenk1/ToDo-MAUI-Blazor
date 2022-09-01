@@ -4,62 +4,65 @@
 <div class="top-0 sticky bg-slate-700 text-white py-4">
     <h1 class="mt-5 font-black text-center text-3xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-green-200 to-yellow-300">ToDo</h1>
 </div>
-<div class="flex flex-col gap-1 justify-center p-4">
-	@if(tasks != null){
+<div class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 justify-center p-4">
+    @if (tasks != null)
+    {
 
-		@foreach (var task in tasks)
-		{
-			<TaskItem task="task" OnRemove="OnRemove" OnToggleCheck="OnToggleCheck"></TaskItem>
-		}
-	
-	}
+        @foreach (var task in tasks)
+        {
+            <TaskItem task="task" OnRemove="OnRemove" OnToggleCheck="OnToggleCheck"></TaskItem>
+        }
+
+    }
 </div>
 
 <AddForm @ref="addForm" OnCreate="OnCreate"></AddForm>
 <button @onclick="AddFormOpen"
-		class="p-0 mb-4  mr-4  w-10 h-10 bg-slate-700 rounded-full mouse shadow focused absolute bottom-0 right-0">
-	<svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block fill-gray-400 hover:fill-cyan-700">
-            <path  d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
+        class="p-0 mb-4  mr-4  w-10 h-10 bg-slate-700 rounded-full mouse shadow focused absolute bottom-0 right-0">
+    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block fill-gray-400 hover:fill-cyan-700">
+        <path d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
                                     C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
                                     C15.952,9,16,9.447,16,10z" />
-          </svg>
-        </button>
+    </svg>
+</button>
+
+<div class="absolute bottom-0 left-0 m-4"><DarkModeToggle /></div>
 
 
 @code {
-	private AddForm addForm;
-	private List<TaskDto> tasks;
+    private AddForm addForm;
+    private List<TaskDto> tasks;
 
-	protected override void OnInitialized()
-	{
-		tasks = taskService.GetAll().ToList();
+    protected override void OnInitialized()
+    {
+        tasks = taskService.GetAll().ToList();
 
-	}
-
-
-	public void AddFormOpen()
-	{
-		addForm.Open();
-	}
-
-	protected void OnCreate(TaskDto task)
-	{
-		taskService.Create(task);
-
-		tasks = taskService.GetAll().ToList();
-	}
+    }
 
 
-	protected void OnRemove(TaskDto task)
-	{
-		taskService.Delete(task.Id);
-		tasks.Remove(task);
-	}
+    public void AddFormOpen()
+    {
+        addForm.Open();
+    }
 
-	protected void OnToggleCheck(TaskDto task)
-	{
-		taskService.SetDone(task.Id, task.Done);
-	}
+    protected void OnCreate(TaskDto task)
+    {
+        taskService.Create(task);
 
-	
+        tasks = taskService.GetAll().ToList();
+    }
+
+
+    protected void OnRemove(TaskDto task)
+    {
+        taskService.Delete(task.Id);
+        tasks.Remove(task);
+    }
+
+    protected void OnToggleCheck(TaskDto task)
+    {
+        taskService.SetDone(task.Id, task.Done);
+    }
+
+
 }
