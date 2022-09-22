@@ -15,7 +15,7 @@
 }
 
 .invalid {
-    @apply border-red-500;
+    @apply border-red-500 dark:bg-red-900;
 }
 
 .ease-in-and-out {
